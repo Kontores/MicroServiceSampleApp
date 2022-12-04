@@ -5,8 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("InMem"));
+builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddControllers();
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -22,5 +23,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+PrepDb.PrepPopulation(app);
 
 app.Run();
